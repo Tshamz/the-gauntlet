@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Get Back To Work!</title>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <meta name="author" content="" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link rel="stylesheet" type="text/css" href="vendor/vendor.css" />
+    <link rel="stylesheet" type="text/css" href="styles/main.css" />
+
+  </head>
+  <body>
+
+    <main class="">
+      <article class="scoreboard" id="scoreboard">
+        <div class="player homePlayer">
+          <span class="name" data-scoreboard-bind="homePlayerName">Null</span>
+          <span class="points" data-scoreboard-bind="homeTeamGoals">0</span>
+          <span class="game current" data-scoreboard-bind="homePlayerGame1">0</span>
+          <span class="game" data-scoreboard-bind="homePlayerGame2">0</span>
+          <span class="game" data-scoreboard-bind="homePlayerGame3">0</span>
+          <span class="game" data-scoreboard-bind="homePlayerGame4">0</span>
+          <span class="game" data-scoreboard-bind="homePlayerGame5">0</span>
+        </div>
+
+        <div class="player awayPlayer">
+          <span class="name" data-scoreboard-bind="awayPlayerName">Null</span>
+          <span class="points" data-scoreboard-bind="awayTeamGoals">0</span>
+          <span class="game current" data-scoreboard-bind="awayPlayerGame1">0</span>
+          <span class="game" data-scoreboard-bind="awayPlayerGame2">0</span>
+          <span class="game" data-scoreboard-bind="awayPlayerGame3">0</span>
+          <span class="game" data-scoreboard-bind="awayPlayerGame4">0</span>
+          <span class="game" data-scoreboard-bind="awayPlayerGame5">0</span>
+        </div>
+      </article>
+    </main>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script>jQuery.noConflict();</script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/mootools/1.5.2/mootools-core.min.js"></script>
+    <script src="vendor/vendor.js"></script>
+    <script src="scripts/main.js"></script>
+
+  </body>
+</html>
