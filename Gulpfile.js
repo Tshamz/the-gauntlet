@@ -85,6 +85,13 @@ gulp.task('vendor', function() {
     .pipe(gulp.dest('deploy/vendor'));
 });
 
+gulp.task('images', function() {
+  return gulp.src(['dev/images/*'])
+    .pipe(plumber(plumberErrorHandler))
+    .pipe(changed('deploy/images', {hasChanged: changed.compareSha1Digest}))
+    .pipe(gulp.dest('deploy/images/'));
+});
+
 gulp.task('copy', function() {
   return gulp.src(['dev/markup/*.html'])
     .pipe(plumber(plumberErrorHandler))
@@ -101,7 +108,7 @@ gulp.task('clean', function() {
 });
 
 gulp.task('build', ['clean'], function(cb) {
-  runsequence(['copy', 'styles', 'scripts', 'vendor'], cb);
+  runsequence(['copy', 'images', 'styles', 'scripts', 'vendor'], cb);
 });
 
 gulp.task('watch', ['build'], function() {
