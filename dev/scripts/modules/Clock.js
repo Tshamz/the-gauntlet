@@ -6,29 +6,15 @@
     return $.get('https://time-is-a-flat-circle.herokuapp.com/api/time');
   };
 
-  var calculatePeoplesTotalTime = function (people) {
-    var compiledData = [];
-    $.each(people.data, function (key, person) {
-      var totalTime = 0;
-      person.entries.forEach(function (entry) {
-        totalTime += entry.hours;
-      });
-      compiledData.push({
-        name: person.name.name,
-        hours: totalTime,
-        active: person.active
-      })
-    })
-    return compiledData;
-  };
-
-  var constructRows = function (items) {
+  var constructRows = function (data) {
+    var items = data.data;
     $('[data-clocks]').html('');
     items.forEach(function (item) {
       var $name = $('<div />', {'class': 'name', text: item.name});
-      var $clock = $('<div />', {'class': 'clock'});
-      var $clockWrapper = $('<div />', {'class': 'clock-wrapper'}).append($clock);
-      var $entry = $('<div />', {'class': 'entry', 'data-clock-for': item.name}).append($name).append($clockWrapper);
+      var $totalClock = $('<div />', {'class': 'clock total-clock', 'data-clock': 'total'});
+      var $billableClock = $('<div />', {'class': 'clock billable-clock', 'data-clock': 'billable'});
+      var $clockWrapper = $('<div />', {'class': 'clock-wrapper'}).append($totalClock).append($billableClock);
+      var $entry = $('<div />', {'class': 'entry', 'data-clocks-for': item.name}).append($name).append($clockWrapper);
       $('[data-clocks]').append($entry);
     });
     return items;
@@ -36,39 +22,55 @@
 
   var initClocks = function (items) {
     items.forEach(function (item) {
-      var clock = $('[data-clock-for="' + item.name + '"] .clock').FlipClock({
-        autoStart: item.active
+      var totalClock = $('[data-clocks-for="' + item.name + '"] [data-clock="total"]').FlipClock({
+        autoStart: item.active.is_active
       });
-      clock.setTime(item.hours * 3600);
-      Clocks[item.name] = clock;
+      var billableClock = $('[data-clocks-for="' + item.name + '"] [data-clock="billable"]').FlipClock({
+        autoStart: item.active.is_active && item.active.is_billable
+      });
+      totalClock.setTime(item.hours.totalTime * 3600);
+      billableClock.setTime(item.hours.billableTime * 3600);
+      Clocks[item.name] = {
+        total: totalClock,
+        billable: billableClock,
+      };
     });
   };
 
-  var updateClocks = function (items) {
-    console.log('clocks updated.');
+  var updateClocks = function (data) {
+    var items = data.data;
     items.forEach(function (item) {
-      var clock = Clocks[item.name];
-      clock.setTime(item.hours * 3600);
+      var totalClock = Clocks[item.name].total;
+      var billableClock = Clocks[item.name].billable;
+
+      totalClock.setTime(item.hours.totalTime * 3600);
+      billableClock.setTime(item.hours.billableTime * 3600);
+
+      totalClock.stop();
+      billableClock.stop();
+      if (item.active.is_active) {
+        totalClock.start();
+        if (item.active.is_billable) {
+          billableClock.start();
+        }
+      }
     });
   };
 
   var initView = function () {
     getPeoplesTimeEntries()
-      .then(calculatePeoplesTotalTime)
       .then(constructRows)
       .done(initClocks);
   };
 
   var updateView = function() {
     getPeoplesTimeEntries()
-      .then(calculatePeoplesTotalTime)
       .done(updateClocks);
   };
 
   Clock.init = function () {
     initView();
     setInterval(function () {
-      console.log('ding');
       updateView();
     }, 1000*60);
   };

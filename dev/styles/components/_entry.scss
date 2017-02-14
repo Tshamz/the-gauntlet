@@ -1,3 +1,15 @@
+.clock {
+  display: none;
+}
+
+[data-active-clocks="Billable Time"] .billable-clock {
+  display: block;
+}
+
+[data-active-clocks="Total Time"] .total-clock {
+  display: block;
+}
+
 .entries-container > :nth-child(2n) {
   background-color: #dddddd;
 }
