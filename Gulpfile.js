@@ -103,8 +103,8 @@ gulp.task('browser-sync', ['build'], function () {
   browserSync.init(browserSyncOptions);
 });
 
-gulp.task('clean', function() {
-  del(['deploy']);
+gulp.task('clean', function () {
+  del(['deploy/**/*']);
 });
 
 gulp.task('build', ['clean'], function(cb) {
